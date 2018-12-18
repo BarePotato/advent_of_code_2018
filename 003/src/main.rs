@@ -34,9 +34,7 @@ fn part_two(rects: Vec<Rect>) -> usize {
         }
     }
 
-    let v = all.difference(&overlaps).collect::<Vec<_>>();
-
-    *v[0]
+    *all.difference(&overlaps).collect::<Vec<_>>()[0]
 }
 
 fn part_one(rects: &Vec<Rect>) -> usize {
