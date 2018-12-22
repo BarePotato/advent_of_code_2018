@@ -1,21 +1,3 @@
-// For instance, r and R are units with the same type but opposite polarity,
-// whereas r and s are entirely different types and do not react.
-// For example:
-
-// In aA, a and A react, leaving nothing behind.
-// In abBA, bB destroys itself, leaving aA. As above, this then destroys itself, leaving nothing.
-// In abAB, no two adjacent units are of the same type, and so nothing happens.
-// In aabAAB, even though aa and AA are of the same type, their polarities match, and so nothing happens.
-// Now, consider a larger example, dabAcCaCBAcCcaDA:
-
-// dabAcCaCBAcCcaDA  The first 'cC' is removed.
-// dabAaCBAcCcaDA    This creates 'Aa', which is removed.
-// dabCBAcCcaDA      Either 'cC' or 'Cc' are removed (the result is the same).
-// dabCBAcaDA        No further actions can be taken.
-// After all possible reactions, the resulting polymer contains 10 units.
-
-// How many units remain after fully reacting the polymer you scanned?
-
 use std::fs::File;
 use std::io::Read;
 
@@ -25,8 +7,31 @@ fn main() {
         .unwrap()
         .read_to_string(&mut input)
         .unwrap();
+    let input = input.trim();
 
-    println!("{}", part_one(input.trim()));
+    println!("{}", part_one(input));
+
+    println!("{}", part_two(input));
+}
+
+fn part_two(polymer: &str) -> usize {
+    let mut shortest = 0;
+
+    for chr in b'a'..=b'z' {
+        let chr = chr as char;
+
+        let improved = polymer
+            .replace(chr, "")
+            .replace(chr.to_ascii_uppercase(), "");
+
+        let poly_len = part_one(&improved);
+
+        if poly_len < shortest || shortest == 0 {
+            shortest = poly_len;
+        }
+    }
+
+    shortest
 }
 
 fn part_one(polymer: &str) -> usize {
