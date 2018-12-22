@@ -13,6 +13,25 @@ fn main() {
     let guards = parse_to_guards(vec);
 
     println!("{}", part_one(&guards));
+
+    println!("{}", part_two(guards));
+}
+
+fn part_two(guards: HashMap<usize, Vec<usize>>) -> usize {
+    let mut sleeper = 0;
+    let (mut idx_minute, mut slept) = (0, 0);
+
+    for (guard, minutes) in guards {
+        for (i, minute) in minutes.iter().enumerate() {
+            if minute > &slept {
+                sleeper = guard;
+                idx_minute = i;
+                slept = *minute;
+            }
+        }
+    }
+
+    sleeper * idx_minute
 }
 
 fn part_one(guards: &HashMap<usize, Vec<usize>>) -> usize {
